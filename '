@@ -1,0 +1,92 @@
+var request = new ajaxRequest()
+request.open("GET", "class.xml", true)
+out = "";
+
+request.onreadystatechange = function()
+{
+	if (this.readyState == 4)
+	{
+		if (this.status == 200)
+		{
+			if (this.responseXML != null)
+
+			{
+
+                var assignments = [];
+                x=this.responseXML.getElementsByTagName("assignments")[0].childNodes[1];
+                y=this.responseXML.getElementsByTagName("stuid");
+
+                for (i=0;i<x.length;i++)
+
+                    {
+
+                    out +=  x[i].firstChild.nodeValue + '\<br>'
+
+
+                    }
+
+                document.getElementById('info').innerHTML = out	
+
+            }
+
+
+            else alert("Ajax error: No data received")
+        }
+        else alert( "Ajax error: " + this.statusText)
+	}
+}
+
+request.send(null)
+
+function ajaxRequest()
+{
+	try
+	{
+		var request = new XMLHttpRequest()
+	}
+	catch(e1)
+	{
+		try
+		{
+			request = new ActiveXObject("Msxml2.XMLHTTP")
+		}
+		catch(e2)
+		{
+			try
+			{
+				request = new ActiveXObject("Microsoft.XMLHTTP")
+			}
+			catch(e3)
+			{
+				request = false
+			}
+		}
+	}
+	return request
+}
+
+var walk_the_DOM = function walk(node, func) {
+    func(node);
+    node = node.firstChild;
+    while (node) {
+        walk(node, func);
+        node = node.nextSibling;
+    }
+};
+
+var getElementsByAttribute = function (name) {
+    var results = [];
+
+    walk_the_DOM(request.responseXML, function (node) {
+        var actual = node.nodeType === 1 && node.getAttribute(att);
+        if (typeof actual === 'string' &&
+            (actual ===value || typeof value !== 'string')) {
+            results.push(node);
+        }
+    });
+
+    
+    return results;
+
+};
+
